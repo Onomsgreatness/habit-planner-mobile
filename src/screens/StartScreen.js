@@ -28,8 +28,8 @@ export default function StartScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { flex: 1, justifyContent: "center", paddingHorizontal: 24 },
-  title: { color: COLORS.white, fontSize: 44, fontWeight: "900", lineHeight: 48 },
-  subtitle: { color: COLORS.lavender, marginTop: 10, marginBottom: 26, fontSize: 14 },
+  title: { color: COLORS.white, fontSize: 44, fontWeight: "900", lineHeight: 48, textAlign: "center"},
+  subtitle: { color: COLORS.lavender, marginTop: 0, marginBottom: 26, fontSize: 14, textAlign: "center"},
 
   primaryBtn: {
     backgroundColor: COLORS.white,
