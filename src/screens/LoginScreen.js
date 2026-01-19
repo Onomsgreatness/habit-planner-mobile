@@ -42,9 +42,12 @@ export default function LoginScreen({ navigation, refreshAuth }) {
 
         <PrimaryButton title={loading ? "Logging in..." : "Log In"} onPress={onLogin} disabled={loading} />
 
-        <Pressable onPress={() => navigation.navigate("Signup")} style={{ marginTop: 16 }}>
-          <Text style={styles.link}>Don’t have an account? Sign up</Text>
-        </Pressable>
+        <View style={styles.inlineRow}>
+            <Text style={styles.linkText}>Don't have an account? </Text>
+            <Pressable onPress={() => navigation.navigate("Signup")}>
+                <Text style={styles.link}>Sign up</Text>
+            </Pressable>
+        </View>
       </View>
     </LinearGradient>
   );
@@ -55,5 +58,7 @@ const styles = StyleSheet.create({
   topRow: { paddingTop: 54, paddingHorizontal: 16 },
   content: { paddingHorizontal: 24, paddingTop: 18 },
   title: { color: COLORS.white, fontSize: 28, fontWeight: "900", marginBottom: 16 },
-  link: { color: COLORS.lavender, fontWeight: "700" },
+  inlineRow: {flexDirection: "row", alignItems: "center", marginTop: 16 },
+  linkText: { color: COLORS.lavender, fontWeight: "700" },
+  link: { color: COLORS.white, fontWeight: "700" },
 });
