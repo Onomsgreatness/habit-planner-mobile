@@ -1,14 +1,5 @@
-// src/screens/HomeScreen.js
 import React, { useEffect, useState, useCallback } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Image,
-  ActivityIndicator,
-  Pressable,
-} from "react-native";
+import {View, Text, StyleSheet, FlatList, Image, ActivityIndicator, Pressable,} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "@react-navigation/native";
 import api from "../services/api";
@@ -148,7 +139,6 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.header}>
         <Text style={styles.welcome}>Welcome,</Text>
 
-        {/* Username on its own line (for long names) */}
         <Text style={styles.username} numberOfLines={2}>
           {username || "Friend"}
         </Text>
@@ -167,7 +157,6 @@ export default function HomeScreen({ navigation }) {
           </Pressable>
         </View>
 
-        {/* Replace "Upcoming Activities" with "Activities" */}
         <Text style={styles.sectionTitle}>Activities</Text>
       </View>
 
