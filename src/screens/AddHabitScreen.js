@@ -5,6 +5,7 @@ import api from "../services/api";
 import { COLORS } from "../theme/colors";
 import TextField from "../components/TextField";
 import PrimaryButton from "../components/PrimaryButton";
+import { scheduleHabitNotifications } from "../services/notifications";
 
 const FREQS = [
   { key: "daily", label: "Daily" },
@@ -33,13 +34,14 @@ export default function AddHabitScreen({ navigation }) {
     try {
       setLoading(true);
 
-      await api.post("/api/habits", {
+      const res = await api.post("/api/habits", {
         title: title.trim(),
         frequency,
         reminderTime: reminderTime ? reminderTime : null,
         active: true,
       });
 
+      await scheduleHabitNotifications(res.data); //schedule locally
       // Go back to Home tab
       navigation.navigate("Home");
     } catch (err) {
