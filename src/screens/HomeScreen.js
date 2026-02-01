@@ -215,7 +215,7 @@ export default function HomeScreen({ navigation }) {
                 </Pressable>
 
                 <Pressable
-                  style={[styles.smallBtn, style.deleteBtn]}
+                  style={[styles.smallBtn, styles.deleteBtn]}
                   onPress={() => deleteHabit(item._id)}
                 >
                   <Text style={[styles.smallBtnText, styles.deleteText]}>Delete</Text>
@@ -330,4 +330,27 @@ const styles = StyleSheet.create({
     color: "#666",
     marginTop: 4,
   },
+
+  rowActions: {
+    flexDirection: "row",
+    gap: 10, 
+    marginTop: 10,
+  },
+  smallBtn: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.06)",
+    paddingVertical: 10,
+    borderRadius: 14,
+    alignItems: "center",
+  },
+  smallBtnText: {
+    fontWeight: "900",
+    color: "#333",
+  },
+  deleteBtn: {
+    backgroundColor: "rgba(255,0,0,0.08)",
+  },
+  deleteText: {
+    color: "#B00020",
+  }
 });
