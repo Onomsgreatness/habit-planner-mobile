@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import api from "../services/api";
 import { COLORS } from "../theme/colors";
 import TextField from "../components/TextField";
 import PrimaryButton from "../components/PrimaryButton";
-import { scheduleHabitNotifications } from "../services/notifications";
+import { scheduleHabitNotifications, cancelHabitNotifications } from "../services/notifications";
 
 const FREQS = [
   { key: "daily", label: "Daily" },
@@ -14,11 +14,22 @@ const FREQS = [
   { key: "custom", label: "Custom" },
 ];
 
-export default function AddHabitScreen({ navigation }) {
+export default function AddHabitScreen({ navigation, route }) {
+    const habit = route?.params?.habit || null;
+    const isEdit = useMemo(() => !!habit?._id, [habit]);
+
   const [title, setTitle] = useState("");
   const [frequency, setFrequency] = useState("daily");
   const [reminderTime, setReminderTime] = useState(""); 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isEdit) {
+        setTitle(habit.title || "");
+        setFrequency(habit.frequency || "daily");
+        setReminderTime(habit.reminderTime || "");
+    }
+  }, [isEdit, habit]);
 
   const onAdd = async () => {
     if (!title.trim()) {
@@ -34,6 +45,24 @@ export default function AddHabitScreen({ navigation }) {
     try {
       setLoading(true);
 
+      if (isEdit) {
+        const res = await api.put(`/api/habits/${habit._id}`, {
+            title: title.trim(),
+            frequency,
+            reminderTime: reminderTime ? reminderTime : null,
+            active: true,
+        });
+
+        const updatedHabit = res.data;
+
+        //reschedule / cancel based on reminderTime
+        if (updatedHabit.reminderTime) {
+            await scheduleHabitNotifications(updatedHabit);
+        } else {
+            await cancelHabitNotifications(updatedHabit._id);
+        }
+      } else {
+
       const res = await api.post("/api/habits", {
         title: title.trim(),
         frequency,
@@ -41,7 +70,12 @@ export default function AddHabitScreen({ navigation }) {
         active: true,
       });
 
-      await scheduleHabitNotifications(res.data); //schedule locally
+      const createdHabit = res.data;
+
+      if (createdHabit.reminderTime) {
+        await scheduleHabitNotifications(res.data); //schedule locally
+      }
+      }
       // Go back to Home tab
       navigation.navigate("Home");
     } catch (err) {
