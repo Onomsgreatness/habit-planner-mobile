@@ -23,13 +23,21 @@ export default function AddHabitScreen({ navigation, route }) {
   const [reminderTime, setReminderTime] = useState(""); 
   const [loading, setLoading] = useState(false);
 
+
+  //Reset when habit is null
   useEffect(() => {
-    if (isEdit) {
+    if (habit && habit._id) {
+        //Edit form
         setTitle(habit.title || "");
         setFrequency(habit.frequency || "daily");
         setReminderTime(habit.reminderTime || "");
+    } else {
+      //Reset form
+      setTitle("");
+      setFrequency("daily");
+      setReminderTime("");
     }
-  }, [isEdit, habit]);
+  }, [habit]);
 
   const onAdd = async () => {
     if (!title.trim()) {
@@ -63,18 +71,18 @@ export default function AddHabitScreen({ navigation, route }) {
         }
       } else {
 
-      const res = await api.post("/api/habits", {
-        title: title.trim(),
-        frequency,
-        reminderTime: reminderTime ? reminderTime : null,
-        active: true,
-      });
+        const res = await api.post("/api/habits", {
+          title: title.trim(),
+          frequency,
+          reminderTime: reminderTime ? reminderTime : null,
+          active: true,
+        });
 
-      const createdHabit = res.data;
+        const createdHabit = res.data;
 
-      if (createdHabit.reminderTime) {
-        await scheduleHabitNotifications(res.data); //schedule locally
-      }
+        if (createdHabit.reminderTime) {
+          await scheduleHabitNotifications(createdHabit); //schedule locally
+        }
       }
       // Go back to Home tab
       navigation.navigate("Home");
