@@ -126,7 +126,7 @@ export default function HomeScreen({ navigation }) {
 
           <Pressable
             style={styles.createEditBtn}
-            onPress={() => navigation.navigate("Add")}
+            onPress={() => navigation.navigate("Add", { habit: null })}
           >
             <Text style={styles.createEditText}>Create</Text>
           </Pressable>
@@ -146,7 +146,7 @@ export default function HomeScreen({ navigation }) {
 
           <PrimaryButton
             title="Add your first habit"
-            onPress={() => navigation.navigate("Add")}
+            onPress={() => navigation.navigate("Add", { habit: null })}
           />
         </View>
       </LinearGradient>
@@ -174,9 +174,9 @@ export default function HomeScreen({ navigation }) {
 
           <Pressable
             style={styles.createEditBtn}
-            onPress={() => navigation.navigate("Add")}
+            onPress={() => navigation.navigate("Add", { habit: null })}
           >
-            <Text style={styles.createEditText}>Create/Edit</Text>
+            <Text style={styles.createEditText}>Create</Text>
           </Pressable>
         </View>
 
@@ -209,7 +209,7 @@ export default function HomeScreen({ navigation }) {
               <View style={styles.rowActions}>
                 <Pressable
                   style={styles.smallBtn}
-                  onPress={() => navigation.navifate("Add", { habit: item })}
+                  onPress={() => navigation.navigate("Add", { habit: item })}
                 >
                   <Text style={styles.smallBtnText}>Edit</Text>
                 </Pressable>
