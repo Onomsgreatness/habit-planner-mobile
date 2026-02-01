@@ -64,11 +64,19 @@ export default function AddHabitScreen({ navigation, route }) {
         const updatedHabit = res.data;
 
         //reschedule / cancel based on reminderTime
-        if (updatedHabit.reminderTime) {
+        try {
+          if (updatedHabit.reminderTime) {
             await scheduleHabitNotifications(updatedHabit);
-        } else {
-            await cancelHabitNotifications(updatedHabit._id);
+          } else {
+              await cancelHabitNotifications(updatedHabit._id);
+          }
+        } catch (notifErr) {
+          console.log("Notification update failed:", notifErr?.message);
         }
+
+        Alert.alert("Success", "Habit updated successfully.", [
+          { text: "OK", onPress: () => navigation.navigate("Home") },
+        ]);
       } else {
 
         const res = await api.post("/api/habits", {
@@ -80,12 +88,18 @@ export default function AddHabitScreen({ navigation, route }) {
 
         const createdHabit = res.data;
 
-        if (createdHabit.reminderTime) {
-          await scheduleHabitNotifications(createdHabit); //schedule locally
+        try {
+          if (createdHabit.reminderTime) {
+            await scheduleHabitNotifications(createdHabit); //schedule locally
+          }
+        } catch (notifErr) {
+          console.log("Notification update failed:", notifErr?.message);
         }
+
+        Alert.alert("Success", "Habit added successfully.", [
+          { text: "OK", onPress: () => navigation.navigate("Home") },
+        ]);
       }
-      // Go back to Home tab
-      navigation.navigate("Home");
     } catch (err) {
       Alert.alert("Failed to add habit", err?.response?.data?.message || "Something went wrong");
     } finally {
