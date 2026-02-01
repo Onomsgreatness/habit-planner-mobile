@@ -1,4 +1,3 @@
-// src/screens/ProgressScreen.js
 import React, { useEffect, useMemo, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -46,7 +45,7 @@ export default function ProgressScreen() {
     try {
       setLoading(true);
 
-      // 1) fetch habits
+      // fetch habits
       const habitsRes = await api.get("/api/habits");
       const habitsList = habitsRes.data || [];
       setHabits(habitsList);
@@ -56,7 +55,7 @@ export default function ProgressScreen() {
         return;
       }
 
-      // 2) fetch progress for each habit (last 7 days)
+      // fetch progress for each habit (last 7 days)
       const from = dates7[0];
       const to = dates7[dates7.length - 1];
 
@@ -86,7 +85,6 @@ export default function ProgressScreen() {
 
   useEffect(() => {
     fetchHabitsAndStats();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // OVERALL percent = total completions / (habits * 7)
@@ -126,7 +124,6 @@ export default function ProgressScreen() {
 
   return (
     <LinearGradient colors={[COLORS.purple, COLORS.purpleLight]} style={styles.container}>
-      {/* ✅ Fixed layout wrapper */}
       <View style={styles.content}>
         <Text style={styles.headerTop}>Habit forming made,</Text>
         <Text style={styles.headerBig}>Easy!</Text>
@@ -158,8 +155,6 @@ export default function ProgressScreen() {
             </View>
 
             <Text style={[styles.sectionTitle, { marginTop: 26 }]}>Habits</Text>
-
-            {/* ✅ ONLY the habit cards scroll vertically */}
             <ScrollView
               style={styles.habitScroll}
               contentContainerStyle={styles.habitScrollContent}
@@ -200,7 +195,6 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   center: { flex: 1, alignItems: "center", justifyContent: "center" },
 
-  // ✅ Fixed layout (no full-page scroll)
   content: {
     flex: 1,
     paddingTop: 90,
@@ -280,7 +274,6 @@ const styles = StyleSheet.create({
   dotOn: { backgroundColor: COLORS.white },
   dotOff: { backgroundColor: "rgba(255,255,255,0.35)" },
 
-  // ✅ Scroll container only for habit cards
   habitScroll: {
     flex: 1, // takes remaining space so the rest stays fixed
     marginTop: 10,
