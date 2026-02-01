@@ -128,7 +128,7 @@ export default function HomeScreen({ navigation }) {
             style={styles.createEditBtn}
             onPress={() => navigation.navigate("Add")}
           >
-            <Text style={styles.createEditText}>Create/Edit</Text>
+            <Text style={styles.createEditText}>Create</Text>
           </Pressable>
         </View>
 
@@ -205,6 +205,23 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => markDone(item._id)}
                 disabled={done}
               />
+
+              <View style={styles.rowActions}>
+                <Pressable
+                  style={styles.smallBtn}
+                  onPress={() => navigation.navifate("Add", { habit: item })}
+                >
+                  <Text style={styles.smallBtnText}>Edit</Text>
+                </Pressable>
+
+                <Pressable
+                  style={[styles.smallBtn, style.deleteBtn]}
+                  onPress={() => deleteHabit(item._id)}
+                >
+                  <Text style={[styles.smallBtnText, styles.deleteText]}>Delete</Text>
+                </Pressable>
+              </View>
+              
             </View>
           );
         }}
