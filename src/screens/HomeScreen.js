@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import {View, Text, StyleSheet, FlatList, Image, ActivityIndicator, Pressable,} from "react-native";
+import {View, Text, StyleSheet, FlatList, Image, ActivityIndicator, Pressable, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect } from "@react-navigation/native";
 import api from "../services/api";
 import { COLORS } from "../theme/colors";
 import PrimaryButton from "../components/PrimaryButton";
+import { cancelHabitNotifications } from "../services/notifications";
+
 
 export default function HomeScreen({ navigation }) {
   const [habits, setHabits] = useState([]);
@@ -64,6 +66,28 @@ export default function HomeScreen({ navigation }) {
       console.log("Failed to mark habit done", err?.message);
     }
   };
+
+  const deleteHabit = (habitId) => {
+  Alert.alert("Delete habit?", "This will remove the habit permanently.", [
+    { text: "Cancel", style: "cancel" },
+    {
+      text: "Delete",
+      style: "destructive",
+      onPress: async () => {
+        try {
+          await api.delete(`/api/habits/${habitId}`);
+          await cancelHabitNotifications(habitId);
+
+          // Refresh list
+          fetchHabits();
+        } catch (err) {
+          console.log("Failed to delete habit", err?.message);
+        }
+      },
+    },
+  ]);
+};
+
 
   useEffect(() => {
     (async () => {
@@ -182,6 +206,23 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => markDone(item._id)}
                 disabled={done}
               />
+
+              <View style={styles.rowActions}>
+                <Pressable
+                  style={styles.smallBtn}
+                  onPress={() => navigation.navigate("Add", { habit: item })}
+                >
+                  <Text style={styles.smallBtnText}>Edit</Text>
+                </Pressable>
+
+                <Pressable
+                  style={[styles.smallBtn, styles.deleteBtn]}
+                  onPress={() => deleteHabit(item._id)}
+                >
+                  <Text style={[styles.smallBtnText, styles.deleteText]}>Delete</Text>
+                </Pressable>
+              </View>
+
             </View>
           );
         }}
@@ -290,4 +331,28 @@ const styles = StyleSheet.create({
     color: "#666",
     marginTop: 4,
   },
+
+  rowActions: {
+  flexDirection: "row",
+  gap: 10,
+  marginTop: 10,
+},
+smallBtn: {
+  flex: 1,
+  backgroundColor: "rgba(0,0,0,0.06)",
+  paddingVertical: 10,
+  borderRadius: 14,
+  alignItems: "center",
+},
+smallBtnText: {
+  fontWeight: "900",
+  color: "#333",
+},
+deleteBtn: {
+  backgroundColor: "rgba(255,0,0,0.08)",
+},
+deleteText: {
+  color: "#B00020",
+},
+
 });
