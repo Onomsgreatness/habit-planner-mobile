@@ -34,7 +34,9 @@ export default function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isAuthed ? (
-        <Stack.Screen name="AppTabs" component={AppTabs} />
+        <Stack.Screen name="AppTabs">
+          {(props) => <AppTabs {...props} refreshAuth={refreshAuth} />}
+        </Stack.Screen>
       ) : (
         <Stack.Screen name="AuthStack">
           {(props) => <AuthStack {...props} refreshAuth={refreshAuth} />}
