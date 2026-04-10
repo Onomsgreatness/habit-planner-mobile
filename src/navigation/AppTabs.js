@@ -4,11 +4,12 @@ import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import AddHabitScreen from "../screens/AddHabitScreen";
 import ProgressScreen from "../screens/ProgressScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import { COLORS } from "../theme/colors";
 
 const Tab = createBottomTabNavigator();
 
-export default function AppTabs() {
+export default function AppTabs({ refreshAuth }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -42,6 +43,9 @@ export default function AppTabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Add" component={AddHabitScreen} />
       <Tab.Screen name="Progress" component={ProgressScreen} />
+      <Tab.Screen name="Profile">
+        {(props) => <ProfileScreen {...props} refreshAuth={refreshAuth} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }
