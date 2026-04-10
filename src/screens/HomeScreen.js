@@ -74,7 +74,7 @@ export default function HomeScreen({ navigation }) {
         style: "destructive",
         onPress: async () => {
           try {
-            await api.delete(`api/habits/${habitId}`);
+            await api.delete(`/api/habits/${habitId}`);
             await cancelHabitNotifications(habitId);
 
             //Refresh list
