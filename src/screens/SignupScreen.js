@@ -9,11 +9,13 @@ import api from "../services/api";
 import { saveToken } from "../services/authStorage";
 
 export default function SignupScreen({ navigation, refreshAuth }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const onSignup = async () => {
+    if (!name.trim()) return Alert.alert("Missing info", "Please enter your name.");
     if (!email || !password) return Alert.alert("Missing info", "Please enter email and password.");
 
     try {
@@ -37,6 +39,7 @@ export default function SignupScreen({ navigation, refreshAuth }) {
       <View style={styles.content}>
         <Text style={styles.title}>Sign Up</Text>
 
+        <TextField value={name} onChangeText={setName} placeholder="Enter your name" />
         <TextField value={email} onChangeText={setEmail} placeholder="Email" />
         <TextField value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry />
 
