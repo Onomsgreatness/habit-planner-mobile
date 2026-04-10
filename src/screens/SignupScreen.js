@@ -20,7 +20,8 @@ export default function SignupScreen({ navigation, refreshAuth }) {
 
     try {
       setLoading(true);
-      const res = await api.post("/api/users/register", { email, password });
+      console.log("Sending:", { name: name.trim(), email, password });
+      const res = await api.post("/api/users/register", { name: name.trim(), email, password });
       await saveToken(res.data.token);
       await refreshAuth();
     } catch (err) {
