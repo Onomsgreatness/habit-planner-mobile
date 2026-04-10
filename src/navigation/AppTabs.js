@@ -30,9 +30,11 @@ export default function AppTabs({ refreshAuth }) {
               ? focused
                 ? "stats-chart"
                 : "stats-chart-outline"
-                : focused
+                : route.name === "Profile"
+                ? focused
                   ? "person"
-                  : "person-outline";
+                  : "person-outline"
+                : "help-outline"; // fallback for any future/unknow screen
 
           return (
             <Ionicons
