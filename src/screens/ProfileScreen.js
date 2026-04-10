@@ -6,7 +6,7 @@ import api from "../services/api";
 import { COLORS } from "../theme/colors";
 import { clearToken } from "../services/authStorage";
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen({ navigation, refreshAuth }) {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
@@ -28,12 +28,8 @@ export default function ProfileScreen({ navigation }) {
         style: "destructive",
         onPress: async () => {
           await clearToken();
-
-          // Reset navigation so user can’t go “Back” into the app
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "AuthStack" }], // <-- must match your Auth screen name
-          });
+          await refreshAuth();
+          
         },
       },
     ]);
