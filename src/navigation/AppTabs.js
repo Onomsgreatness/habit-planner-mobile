@@ -26,9 +26,13 @@ export default function AppTabs({ refreshAuth }) {
               ? focused
                 ? "add-circle"
                 : "add-circle-outline"
-              : focused
-              ? "stats-chart"
-              : "stats-chart-outline";
+              : route.name === "Progress"
+              ? focused
+                ? "stats-chart"
+                : "stats-chart-outline"
+                : focused
+                  ? "person"
+                  : "person-outline";
 
           return (
             <Ionicons
